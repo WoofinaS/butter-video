@@ -87,25 +87,23 @@ func main() {
 		go feeder(jobs)
 	}
 
-	feeders.Wait()
-	close(jobs)
-
 	for x := 0; x < threads; x++ {
 		workers.Add(1)
 		go worker(jobs, scores)
 	}
-
-	workers.Wait()
-	close(scores)
 
 	for x := 0; x < 1; x++ {
 		consumers.Add(1)
 		go consumer(scores)
 	}
 
+	feeders.Wait()
+	close(jobs)
+	workers.Wait()
+	close(scores)
 	consumers.Wait()
-	fmt.Println(totalScore)
 
+	fmt.Println(totalScore)
 }
 
 func feeder(jobs chan job) {
