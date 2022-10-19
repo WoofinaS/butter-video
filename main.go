@@ -21,6 +21,7 @@ var (
 	threads                     int
 	feeders, workers, consumers sync.WaitGroup
 	totalScore                  float32
+	totalFrames                 int
 )
 
 type job struct {
@@ -103,7 +104,7 @@ func main() {
 	close(scores)
 	consumers.Wait()
 
-	fmt.Println(totalScore)
+	fmt.Println(totalScore / float32(totalFrames))
 }
 
 func feeder(jobs chan job) {
@@ -161,6 +162,7 @@ func compare(srcBytes, disBytes *[]byte) float32 {
 func consumer(scores chan float32) {
 	for c := range scores {
 		totalScore += c
+		totalFrames++
 	}
 	consumers.Done()
 }
