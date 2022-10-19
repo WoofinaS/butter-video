@@ -61,7 +61,7 @@ func getVideoResolution(path string) (int, int, error) {
 	if err != nil {
 		return 0, 0, err
 	}
-	height, err := strconv.Atoi(split[0])
+	height, err := strconv.Atoi(split[1])
 	if err != nil {
 		return 0, 0, err
 	}
